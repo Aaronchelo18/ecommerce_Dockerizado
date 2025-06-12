@@ -12,6 +12,10 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
       - ../sql:/docker-entrypoint-initdb.d/
+    # --- AÑADE ESTAS DOS LÍNEAS ---
+    ports:
+      - "3306:3306"
+    # -----------------------------
     networks:
       - backend
 
@@ -25,10 +29,7 @@ services:
     depends_on:
       - db
     ports:
-      # Mapea el puerto 8084 del HOST al puerto 8080 del CONTENEDOR
       - "8084:8080"
-    # No necesitamos variables de entorno aquí, ya que todo está en application.yml
-    # Esto evita conflictos y mantiene la configuración en un solo lugar.
     networks:
       - backend
 
