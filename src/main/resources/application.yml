@@ -1,26 +1,36 @@
-
+# Puerto INTERNO en el que correrá la aplicación dentro del contenedor
 server:
-  port: 8084
+  port: 8080
 
 spring:
   application:
     name: ecommerce
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    #url: jdbc:mysql://localhost/ecommerce_lp2_prod?serverTimezone=America/Lima&useSSL=false
-    url: jdbc:mysql://db/ecommerce_lp2_prod?serverTimezone=America/Lima&useSSL=false
+    # URL de conexión a MySQL. 
+    # 'mysql-ecommerce-prod' DEBE ser el nombre del servicio de MySQL en tu docker-compose.yml
+    url: jdbc:mysql://mysql-ecommerce-prod:3306/ecommerce_db?useSSL=false&allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true
+    # Usuario y contraseña que deben coincidir con las variables de entorno en tu docker-compose.yml
     username: root
-    password: admin123
-
+    password: admin123 # Asegúrate que esta es la contraseña correcta (en el compose era 'admin')
   jpa:
-    database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
+      # 'update' permite a Hibernate crear/modificar tablas basado en tus entidades Java
       ddl-auto: update
+    # Muestra el SQL en la consola, muy útil para depurar
     show-sql: true
     properties:
       hibernate:
         format_sql: true
+    database-platform: org.hibernate.dialect.MySQLDialect
+
+# Configuración del Actuator para el health check
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
 
 logging:
   level:
     org.hibernate.sql: debug
+    org.springframework.web: INFO
