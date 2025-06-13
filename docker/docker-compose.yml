@@ -11,7 +11,6 @@ services:
       - mysql_data:/var/lib/mysql
       - ../sql:/docker-entrypoint-initdb.d/
     ports:
-      # Nuevo puerto para la base de datos para evitar conflictos
       - "3310:3306"
     networks:
       - backend
@@ -24,7 +23,6 @@ services:
     depends_on:
       - db
     ports:
-      # Nuevo puerto para la aplicación para evitar conflictos
       - "8085:8080"
     networks:
       - backend
